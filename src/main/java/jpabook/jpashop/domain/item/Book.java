@@ -3,6 +3,7 @@ package jpabook.jpashop.domain.item;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jpabook.jpashop.domain.Money;
+import jpabook.jpashop.domain.Quantity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class Book extends Item {
     @Builder
-    public Book(String name, Money price, Integer stockQuantity, String author, String isbn) {
+    public Book(String name, Money price, Quantity stockQuantity, String author, String isbn) {
         super(name, price, stockQuantity);
         this.author = author;
         this.isbn = isbn;
