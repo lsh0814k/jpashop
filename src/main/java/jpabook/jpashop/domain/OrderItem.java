@@ -15,9 +15,11 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class OrderItem {
     @Builder
-    public OrderItem(Money orderPrice, Quantity count) {
+    private OrderItem(Money orderPrice, Quantity count, Order order, Item item) {
         this.orderPrice = orderPrice;
         this.count = count;
+        this.order = order;
+        this.item = item;
     }
 
     @Id @GeneratedValue
@@ -37,4 +39,24 @@ public class OrderItem {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public Money getTotalPrice() {
+        return orderPrice.multiple(count.getValue());
+    }
+
+    public void cancel() {
+        item.addStock(count.getValue());
+    }
+
+    public static OrderItem createOrderItem(Item item, Long price, Integer count) {
+        OrderItem orderItem = OrderItem
+                .builder()
+                .count(Quantity.of(count))
+                .orderPrice(Money.of(price))
+                .item(item)
+                .build();
+        item.removeStock(count);
+
+        return orderItem;
+    }
 }
