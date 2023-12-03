@@ -24,4 +24,12 @@ public class Book extends Item {
 
     private String author;
     private String isbn;
+
+    public void update(Book book) {
+        this.name = book.getName();
+        this.price = book.getPrice();
+        this.stockQuantity = book.getStockQuantity();
+        this.author = book.author;
+        this.isbn = book.getIsbn();
+    }
 }

@@ -27,13 +27,13 @@ public abstract class Item extends BaseEntity {
     @Column(name = "item_id")
     private Long id;
 
-    private String name;
+    protected String name;
 
     @Convert(converter = MoneyConverter.class)
-    private Money price;
+    protected Money price;
 
     @Convert(converter = QuantityConverter.class)
-    private Quantity stockQuantity;
+    protected Quantity stockQuantity;
 
     @OneToMany(mappedBy = "item")
     private List<CategoryItem> categoryItems = new ArrayList<>();
