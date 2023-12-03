@@ -1,4 +1,4 @@
-package jpabook.jpashop.web;
+package jpabook.jpashop.web.member;
 
 import jpabook.jpashop.domain.Member;
 import lombok.Getter;

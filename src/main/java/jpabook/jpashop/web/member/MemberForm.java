@@ -1,4 +1,4 @@
-package jpabook.jpashop.web;
+package jpabook.jpashop.web.member;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
