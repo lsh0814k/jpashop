@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,6 +19,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberJpaRepository memberJpaRepository;
     private final ItemRepository itemRepository;
+
+    public List<Order> findAll(OrderSearch orderSearch) {
+        return orderRepository.findAll(orderSearch);
+    }
 
     @Transactional
     public Long order(Long memberId, Long itemId, int count) {

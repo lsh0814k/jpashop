@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +75,22 @@ class OrderServiceTest {
 
         assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCEL);
         assertThat(item.getStockQuantity().getValue()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("전체 주문 조회")
+    void findAll() {
+        //given
+        Member member = createMember();
+        Item item = createBook("JPA", 10000, 10);
+        int orderCount = 2;
+        Long orderId = orderService.order(member.getId(), item.getId(), orderCount);
+
+        //when
+        List<Order> orders = orderService.findAll(new OrderSearch("회원", OrderStatus.ORDER));
+        assertThat(orders.get(0).getMember().getName()).isEqualTo("회원");
+        assertThat(orders.get(0).getStatus()).isEqualTo(OrderStatus.ORDER);
+
     }
 
     private Member createMember() {
