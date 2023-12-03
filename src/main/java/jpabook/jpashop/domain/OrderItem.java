@@ -2,6 +2,7 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 import jpabook.jpashop.domain.converter.MoneyConverter;
+import jpabook.jpashop.domain.converter.QuantityConverter;
 import jpabook.jpashop.domain.item.Item;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class OrderItem {
     @Builder
-    public OrderItem(Money orderPrice, Integer count) {
+    public OrderItem(Money orderPrice, Quantity count) {
         this.orderPrice = orderPrice;
         this.count = count;
     }
@@ -26,7 +27,8 @@ public class OrderItem {
     @Convert(converter = MoneyConverter.class)
     private Money orderPrice;
 
-    private Integer count;
+    @Convert(converter = QuantityConverter.class)
+    private Quantity count;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id")
