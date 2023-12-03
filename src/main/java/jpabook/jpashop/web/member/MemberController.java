@@ -11,23 +11,24 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
-@Slf4j
+@Controller @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/members")
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping(value = "/members/new")
+    @GetMapping(value = "/new")
     public String createForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
     }
 
-    @PostMapping(value = "/members/new")
+    @PostMapping(value = "/new")
     public String create(@Validated MemberForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "members/createMemberForm";
@@ -42,11 +43,11 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping(value = "/members")
+    @GetMapping
     public String members(Model model) {
         List<Member> members = memberService.findAll();
         model.addAttribute("members", members.stream().map(MemberResponse::new).collect(Collectors.toList()));
 
-        return "members/memberLisr";
+        return "members/memberList";
     }
 }
