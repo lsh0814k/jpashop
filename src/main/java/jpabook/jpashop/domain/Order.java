@@ -21,8 +21,11 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "orders")
 public class Order extends BaseEntity {
     @Builder
-    public Order(OrderStatus status) {
+    private Order(OrderStatus status, Money totalPrice, Member member, Delivery delivery) {
         this.status = status;
+        this.totalPrice = totalPrice;
+        this.member = member;
+        this.delivery = delivery;
     }
 
     @Id @GeneratedValue
@@ -52,6 +55,30 @@ public class Order extends BaseEntity {
     @PrePersist
     private void prePersist() {
         orderDate = LocalDateTime.now();
+    }
+
+    public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
+        Order order = Order.builder()
+                .member(member)
+                .delivery(delivery)
+                .status(OrderStatus.ORDER)
+                .totalPrice(Money.of(orderItems.stream().mapToLong(i -> i.getTotalPrice().getValue()).sum()))
+                .build();
+
+        for (OrderItem orderItem: orderItems) {
+            order.getOrderItems().add(orderItem);
+        }
+
+        return order;
+    }
+
+    public void cancel() {
+        delivery.checkCancelable();
+
+        this.status = OrderStatus.CANCEL;
+        for (OrderItem orderItem: orderItems) {
+            orderItem.cancel();
+        }
     }
 
 }
