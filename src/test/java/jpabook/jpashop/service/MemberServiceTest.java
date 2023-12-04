@@ -50,4 +50,23 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.join(newMember))
                 .isInstanceOf(IllegalStateException.class);
     }
+
+    @Test
+    @DisplayName("회원 수정")
+    void update() {
+        // given
+        Member member = Member.builder()
+                .name("kim")
+                .build();
+        memberService.join(member);
+
+        // when
+        memberService.update(member.getId(), "lee");
+        em.flush();
+        em.clear();
+
+        // then
+        Member findMember = memberService.findById(member.getId());
+        assertThat(findMember.getName()).isEqualTo("lee");
+    }
 }

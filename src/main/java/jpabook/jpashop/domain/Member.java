@@ -5,6 +5,7 @@ import jpabook.jpashop.domain.common.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,4 +32,13 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     List<Order> orders = new ArrayList<>();
+
+    public void update(Member member) {
+        if (!ObjectUtils.isEmpty(member.getName())) {
+            this.name = member.getName();
+        }
+        if (!ObjectUtils.isEmpty(member.getAddress())) {
+            this.address = member.getAddress();
+        }
+    }
 }
